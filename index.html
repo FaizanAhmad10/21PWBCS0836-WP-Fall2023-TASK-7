@@ -1,0 +1,40 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emails Content</title>
+</head>
+<body>
+  <h1>Emails Content</h1>
+  <pre id="emails-content"></pre>
+  <button onclick="sendEmail()">Send Email</button>
+  <div id="notification"></div>
+
+  <script>
+    function sendEmail() {
+      fetch('/send-email')
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('notification').innerHTML = data.message;
+        })
+        .catch(error => {
+          document.getElementById('notification').innerHTML = 'Error sending email: ' + error.message;
+        });
+    }
+
+    // Fetch emails content from server and update the content
+    fetch('/emails')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('emails-content').innerHTML = data;
+      })
+      .catch(error => {
+        document.getElementById('emails-content').innerHTML = 'Error loading emails content: ' + error.message;
+      });
+  </script>
+  <script src="server.js"></script>
+</body>
+</html>
